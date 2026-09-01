@@ -17,9 +17,9 @@ code {
   margin-left: 40px;
 }
 
-/* All footer links */
+/* General footer links: muted, then blue on hover */
 footer a {
-  color: #6c757d;
+  color: #666;
   text-decoration: none;
   transition: color 0.2s ease;
 }
@@ -38,7 +38,17 @@ footer a:hover {
   margin-bottom: 14px;
 }
 
-/* Remove navbar link indentation on smaller screens */
+/* Keep disclaimer links blue */
+.footer-disclaimer a {
+  color: #387ed1;
+  text-decoration: none;
+}
+
+.footer-disclaimer a:hover {
+  color: #387ed1;
+}
+
+/* Remove navbar indentation on smaller screens */
 @media (max-width: 991px) {
   .nav-link {
     margin-left: 0;
