@@ -54,3 +54,46 @@ footer a:hover {
     margin-left: 0;
   }
 }
+
+.universe-section {
+  margin-top: 80px;
+  margin-bottom: 80px;
+}
+
+.universe-section h1 {
+  color: #424242;
+  font-size: 2rem;
+  font-weight: 500;
+}
+
+.universe-section > .text-center p {
+  color: #424242;
+}
+
+.universe-item {
+  padding: 15px 40px;
+}
+
+.universe-logo-box {
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.universe-logo {
+  width: auto;
+  height: auto;
+  max-width: 230px;
+  max-height: 65px;
+  object-fit: contain;
+}
+
+.universe-item p {
+  max-width: 300px;
+  margin: 0 auto;
+  color: #888;
+  font-size: 0.8rem;
+  line-height: 1.7;
+}
