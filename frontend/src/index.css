@@ -12,12 +12,14 @@ code {
     source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
-/* Navbar links */
+/* Navbar */
+
 .nav-link {
   margin-left: 40px;
 }
 
-/* General footer links: muted, then blue on hover */
+/* Footer */
+
 footer a {
   color: #666;
   text-decoration: none;
@@ -28,7 +30,6 @@ footer a:hover {
   color: #387ed1;
 }
 
-/* Footer disclaimer */
 .footer-disclaimer {
   font-size: 0.75rem;
   line-height: 1.8;
@@ -38,7 +39,6 @@ footer a:hover {
   margin-bottom: 14px;
 }
 
-/* Keep disclaimer links blue */
 .footer-disclaimer a {
   color: #387ed1;
   text-decoration: none;
@@ -48,12 +48,7 @@ footer a:hover {
   color: #387ed1;
 }
 
-/* Remove navbar indentation on smaller screens */
-@media (max-width: 991px) {
-  .nav-link {
-    margin-left: 0;
-  }
-}
+/* Universe section */
 
 .universe-section {
   margin-top: 80px;
@@ -98,6 +93,8 @@ footer a:hover {
   line-height: 1.7;
 }
 
+/* Brokerage section */
+
 .brokerage-link {
   color: #387ed1;
   text-decoration: none;
@@ -108,8 +105,85 @@ footer a:hover {
 }
 
 .brokerage-list {
+  margin-top: 20px;
+  color: #6c757d;
   text-align: left;
   font-size: 0.75rem;
   line-height: 2.5;
-  margin-top: 20px;
+}
+
+/* Support hero */
+
+#supportHero {
+  background-color: rgb(56, 126, 209);
+  color: white;
+}
+
+#supportHero a {
+  color: white;
+  text-underline-offset: 4px;
+}
+
+#supportWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#supportHero input {
+  width: 100%;
+  padding: 18px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  outline: none;
+}
+
+.support-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+}
+
+.featured-list {
+  padding-left: 22px;
+}
+
+.featured-list li {
+  padding-left: 8px;
+  margin-bottom: 20px;
+  line-height: 1.7;
+}
+
+/* Responsive styling */
+
+@media (max-width: 991px) {
+  .nav-link {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 767px) {
+  .universe-item {
+    padding: 15px 20px;
+  }
+
+  .universe-logo {
+    max-width: 210px;
+  }
+
+  #supportWrapper {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  #supportHero input {
+    padding: 15px;
+  }
+
+  .support-links {
+    flex-direction: column;
+    gap: 12px;
+  }
 }
