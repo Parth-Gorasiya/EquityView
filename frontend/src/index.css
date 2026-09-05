@@ -97,3 +97,19 @@ footer a:hover {
   font-size: 0.8rem;
   line-height: 1.7;
 }
+
+.brokerage-link {
+  color: #387ed1;
+  text-decoration: none;
+}
+
+.brokerage-link:hover {
+  color: #222;
+}
+
+.brokerage-list {
+  text-align: left;
+  font-size: 0.75rem;
+  line-height: 2.5;
+  margin-top: 20px;
+}
