@@ -9,12 +9,34 @@
 
   border: 1px solid rgb(225, 225, 225);
   border-radius: var(--radius);
+
   background-color: rgb(245, 245, 245);
   box-shadow: 0 8px 30px rgb(0 0 0 / 20%);
 
   transform: translateX(-50%);
-  animation: open-buy-window 0.2s ease-out;
+  animation: open-order-window 0.2s ease-out;
 }
+
+/* Order header */
+
+#buy-window .order-window-header {
+  padding: 16px 20px;
+
+  color: #fff;
+
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+
+#buy-window .order-window-header h3 {
+  margin: 0;
+
+  color: #fff;
+
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* Order form */
 
 #buy-window form {
   width: 100%;
@@ -22,21 +44,28 @@
 
 #buy-window .regular-order {
   padding: 20px 26px 30px;
-  border-radius: var(--radius) var(--radius) 0 0;
+
+  border-radius: 0;
+
   background-color: #fff;
 }
 
 #buy-window .stock-name {
   margin: 0 0 20px;
+
   color: #424242;
+
   font-size: 1rem;
   font-weight: 500;
 }
+
+/* Quantity and price fields */
 
 #buy-window .inputs {
   display: flex;
   align-items: center;
   gap: 16px;
+
   margin: 0;
 }
 
@@ -44,8 +73,11 @@
   flex: 1;
   min-width: 0;
   padding: 0;
+
   border: 1px solid #ddd;
   border-radius: 3px;
+
+  transition: border-color 0.2s ease;
 }
 
 #buy-window .inputs fieldset:focus-within {
@@ -56,7 +88,9 @@
   width: auto;
   padding: 0 5px;
   margin-left: 10px;
+
   color: #777;
+
   font-size: 0.75rem;
 }
 
@@ -64,23 +98,33 @@
   width: 100%;
   min-height: 38px;
   padding: 0 12px;
+
   border: none;
   outline: none;
+
   color: #424242;
   background-color: transparent;
+
   font-size: 1rem;
 }
 
+/* Error message */
+
 #buy-window .order-error {
-  padding: 10px 20px 0;
+  padding: 10px 0 0;
   margin: 0;
+
   color: #d32f2f;
+
   font-size: 0.8rem;
 }
+
+/* Footer and buttons */
 
 #buy-window .buttons {
   width: 100%;
   padding: 16px 20px;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -89,6 +133,7 @@
 
 #buy-window .buttons > span {
   color: #666;
+
   font-size: 0.75rem;
 }
 
@@ -101,53 +146,93 @@
   min-width: 75px;
   padding: 9px 18px;
   margin: 0;
+
   border: none;
   border-radius: 3px;
+
   color: #fff;
+
   text-align: center;
   text-decoration: none;
+
+  font-family: inherit;
   font-size: 0.85rem;
+
   cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    opacity 0.2s ease;
 }
+
+/* Buy button */
 
 #buy-window .btn-blue {
   background-color: #4184f3;
 }
 
-#buy-window .btn-blue:hover {
+#buy-window .btn-blue:hover:not(:disabled) {
   background-color: #2f70d8;
 }
 
+/* Sell button */
+
+#buy-window .btn-orange {
+  background-color: #ff5722;
+}
+
+#buy-window .btn-orange:hover:not(:disabled) {
+  background-color: #e64a19;
+}
+
+/* Cancel button */
+
 #buy-window .btn-grey {
   color: #555;
+
   background-color: #d4d4d4;
 }
 
-#buy-window .btn-grey:hover {
+#buy-window .btn-grey:hover:not(:disabled) {
   color: #fff;
+
   background-color: #999;
 }
 
+/* Disabled buttons */
+
 #buy-window .btn:disabled {
   cursor: not-allowed;
+
   opacity: 0.6;
 }
 
-@keyframes open-buy-window {
+/* Opening animation */
+
+@keyframes open-order-window {
   from {
     opacity: 0;
+
     transform: translate(-50%, 20px);
   }
 
   to {
     opacity: 1;
+
     transform: translate(-50%, 0);
   }
 }
 
+/* Mobile layout */
+
 @media (max-width: 500px) {
   #buy-window {
     bottom: 10px;
+  }
+
+  #buy-window .regular-order {
+    padding: 18px;
   }
 
   #buy-window .inputs {
@@ -158,6 +243,10 @@
   #buy-window .buttons {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  #buy-window .buttons > span {
+    text-align: center;
   }
 
   #buy-window .buttons > div {

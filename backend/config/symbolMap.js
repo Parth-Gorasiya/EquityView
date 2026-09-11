@@ -1,0 +1,19 @@
+const symbolMap = {
+  INFY: "INFY.NS",
+  ONGC: "ONGC.NS",
+  TCS: "TCS.NS",
+  KPITTECH: "KPITTECH.NS",
+  QUICKHEAL: "QUICKHEAL.NS",
+  WIPRO: "WIPRO.NS",
+  "M&M": "M&M.NS",
+  RELIANCE: "RELIANCE.NS",
+  HUL: "HINDUNILVR.NS",
+  HINDUNILVR: "HINDUNILVR.NS",
+  BHARTIARTL: "BHARTIARTL.NS",
+  HDFCBANK: "HDFCBANK.NS",
+  ITC: "ITC.NS",
+  SBIN: "SBIN.NS",
+  TATAPOWER: "TATAPOWER.NS",
+};
+
+module.exports = { symbolMap };

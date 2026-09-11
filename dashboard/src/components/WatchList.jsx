@@ -19,6 +19,7 @@ const WatchList = () => {
     datasets: [
       {
         label: "Price",
+
         data: watchlist.map((stock) => Number(stock.price)),
 
         backgroundColor: [
@@ -76,7 +77,8 @@ const WatchList = () => {
 };
 
 const WatchListItem = ({ stock }) => {
-  const [showWatchlistActions, setShowWatchlistActions] = useState(false);
+  const [showWatchlistActions, setShowWatchlistActions] =
+    useState(false);
 
   const handleMouseEnter = () => {
     setShowWatchlistActions(true);
@@ -117,10 +119,15 @@ const WatchListItem = ({ stock }) => {
 };
 
 const WatchListActions = ({ uid }) => {
-  const { openBuyWindow } = useContext(GeneralContext);
+  const { openBuyWindow, openSellWindow } =
+    useContext(GeneralContext);
 
   const handleBuyClick = () => {
     openBuyWindow(uid);
+  };
+
+  const handleSellClick = () => {
+    openSellWindow(uid);
   };
 
   return (
@@ -146,7 +153,11 @@ const WatchListActions = ({ uid }) => {
         arrow
         slots={{ transition: Grow }}
       >
-        <button type="button" className="sell">
+        <button
+          type="button"
+          className="sell"
+          onClick={handleSellClick}
+        >
           Sell
         </button>
       </Tooltip>
