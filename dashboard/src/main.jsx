@@ -2,13 +2,17 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 
-import Home from "./components/Home.jsx";
 import "./index.css";
+
+import Home from "./components/Home.jsx";
+import AuthGuard from "./components/AuthGuard.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
-      <Home />
+      <AuthGuard>
+        <Home />
+      </AuthGuard>
     </BrowserRouter>
-  </StrictMode>,
+  </StrictMode>
 );

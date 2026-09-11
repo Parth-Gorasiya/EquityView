@@ -3,21 +3,35 @@ const { symbolMap } = require("./config/symbolMap");
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
+const authRoutes = require("./routes/authRoutes");
+const { protect } = require("./middleware/authMiddleware");
 
-const {HoldingsModel} = require("./model/HoldingsModel");
-const {PositionsModel} = require("./model/PositionsModel");
+const { HoldingsModel } = require("./model/HoldingsModel");
+const { PositionsModel } = require("./model/PositionsModel");
 const { getStockQuote } = require("./services/marketDataService");
 
-const {OrdersModel} = require("./model/OrdersModel");
+const { OrdersModel } = require("./model/OrdersModel");
 
 const app = express();
 
 const PORT = process.env.PORT || 3002;
 const MONGO_URL = process.env.MONGO_URL;
 
-app.use(cors());
+app.set("trust proxy", 1);
+
+app.use(
+  cors({
+    origin: [process.env.CLIENT_URL, process.env.DASHBOARD_URL],
+    credentials: true,
+  }),
+);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+
+app.use("/api/auth", authRoutes);
 
 app.get("/", (req, res) => {
   res.send("EquityView backend is running");
@@ -203,9 +217,11 @@ app.get("/", (req, res) => {
 // res.send("Done!");
 // })
 
-app.get("/allHoldings", async (req, res) => {
+app.get("/allHoldings", protect, async (req, res) => {
   try {
-    const allHoldings = await HoldingsModel.find({}).sort({
+    const allHoldings = await HoldingsModel.find({
+      user: req.user._id,
+    }).sort({
       name: 1,
     });
 
@@ -249,14 +265,11 @@ app.get("/allHoldings", async (req, res) => {
             marketTime: quote.marketTime,
           };
         } catch (error) {
-          console.error(
-            `Unable to update ${holding.name}:`,
-            error.message
-          );
+          console.error(`Unable to update ${holding.name}:`, error.message);
 
           return holding.toObject();
         }
-      })
+      }),
     );
 
     res.status(200).json(updatedHoldings);
@@ -271,13 +284,47 @@ app.get("/allHoldings", async (req, res) => {
   }
 });
 
-app.get("/allPositions", async(req, res) => {
-  let allPositions = await PositionsModel.find({});
+app.get("/allPositions", protect, async (req, res) => {
+  try {
+    const allPositions = await PositionsModel.find({
+      user: req.user._id,
+    }).sort({
+      name: 1,
+    });
 
-  res.json(allPositions);
+    res.status(200).json(allPositions);
+  } catch (error) {
+    console.error("Unable to load positions:", error);
+
+    res.status(500).json({
+      success: false,
+      message: "Unable to load positions.",
+      error: error.message,
+    });
+  }
 });
 
-app.post("/newOrder", async (req, res) => {
+app.get("/allOrders", protect, async (req, res) => {
+  try {
+    const allOrders = await OrdersModel.find({
+      user: req.user._id,
+    }).sort({
+      createdAt: -1,
+    });
+
+    res.status(200).json(allOrders);
+  } catch (error) {
+    console.error("Unable to load orders:", error);
+
+    res.status(500).json({
+      success: false,
+      message: "Unable to load orders.",
+      error: error.message,
+    });
+  }
+});
+
+app.post("/newOrder", protect, async (req, res) => {
   try {
     const name = req.body.name?.trim().toUpperCase();
     const qty = Number(req.body.qty);
@@ -298,18 +345,19 @@ app.post("/newOrder", async (req, res) => {
       });
     }
 
-    const existingHolding = await HoldingsModel.findOne({ name });
+    const existingHolding = await HoldingsModel.findOne({
+      user: req.user._id,
+      name,
+    });
 
     if (mode === "BUY") {
       if (existingHolding) {
-        const oldInvestment =
-          existingHolding.avg * existingHolding.qty;
+        const oldInvestment = existingHolding.avg * existingHolding.qty;
 
         const newInvestment = price * qty;
         const totalQuantity = existingHolding.qty + qty;
 
-        existingHolding.avg =
-          (oldInvestment + newInvestment) / totalQuantity;
+        existingHolding.avg = (oldInvestment + newInvestment) / totalQuantity;
 
         existingHolding.qty = totalQuantity;
         existingHolding.price = price;
@@ -319,6 +367,7 @@ app.post("/newOrder", async (req, res) => {
         await existingHolding.save();
       } else {
         await HoldingsModel.create({
+          user: req.user._id,
           name,
           qty,
           avg: price,
@@ -350,6 +399,7 @@ app.post("/newOrder", async (req, res) => {
       if (existingHolding.qty === 0) {
         await HoldingsModel.deleteOne({
           _id: existingHolding._id,
+          user: req.user._id,
         });
       } else {
         await existingHolding.save();
@@ -357,6 +407,7 @@ app.post("/newOrder", async (req, res) => {
     }
 
     const newOrder = await OrdersModel.create({
+      user: req.user._id,
       name,
       qty,
       price,
@@ -378,8 +429,6 @@ app.post("/newOrder", async (req, res) => {
     });
   }
 });
-
-
 
 const startServer = async () => {
   try {

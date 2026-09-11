@@ -1,11 +1,43 @@
-const {Schema} = require("mongoose");
+const { Schema } = require("mongoose");
 
-const OrdersSchema = new Schema({
-    name : String,
-    qty : Number,
-    price : Number,
-     mode : String,
+const OrdersSchema = new Schema(
+  {
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+       required: true,
+      index: true,
+    },
 
-});
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+      uppercase: true,
+    },
 
-module.exports = {OrdersSchema};
+    qty: {
+      type: Number,
+      required: true,
+      min: 1,
+    },
+
+    price: {
+      type: Number,
+      required: true,
+      min: 0,
+    },
+
+    mode: {
+      type: String,
+      required: true,
+      enum: ["BUY", "SELL"],
+      uppercase: true,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+module.exports = { OrdersSchema };

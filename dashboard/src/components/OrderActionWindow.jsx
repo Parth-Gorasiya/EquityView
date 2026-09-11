@@ -4,8 +4,7 @@ import axios from "axios";
 import GeneralContext from "./GeneralContext";
 import "./BuyActionWindow.css";
 
-const API_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:3002";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3002";
 
 const OrderActionWindow = ({ uid, mode }) => {
   const generalContext = useContext(GeneralContext);
@@ -35,12 +34,18 @@ const OrderActionWindow = ({ uid, mode }) => {
       setIsSubmitting(true);
       setError("");
 
-      const response = await axios.post(`${API_URL}/newOrder`, {
-        name: uid,
-        qty: quantity,
-        price,
-        mode,
-      });
+      const response = await axios.post(
+        `${API_URL}/newOrder`,
+        {
+          name: uid,
+          qty: quantity,
+          price,
+          mode,
+        },
+        {
+          withCredentials: true,
+        },
+      );
 
       console.log(response.data.message);
       generalContext.closeOrderWindow();
@@ -49,7 +54,7 @@ const OrderActionWindow = ({ uid, mode }) => {
 
       setError(
         error.response?.data?.message ||
-          `Unable to ${mode.toLowerCase()} the stock.`
+          `Unable to ${mode.toLowerCase()} the stock.`,
       );
     } finally {
       setIsSubmitting(false);
@@ -79,9 +84,7 @@ const OrderActionWindow = ({ uid, mode }) => {
               min="1"
               step="1"
               value={stockQuantity}
-              onChange={(event) =>
-                setStockQuantity(event.target.value)
-              }
+              onChange={(event) => setStockQuantity(event.target.value)}
             />
           </fieldset>
 
@@ -93,9 +96,7 @@ const OrderActionWindow = ({ uid, mode }) => {
               min="0"
               step="0.05"
               value={stockPrice}
-              onChange={(event) =>
-                setStockPrice(event.target.value)
-              }
+              onChange={(event) => setStockPrice(event.target.value)}
             />
           </fieldset>
         </div>
